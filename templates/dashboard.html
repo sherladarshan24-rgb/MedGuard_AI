@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedGuard AI Dashboard</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<!-- Navigation Bar -->
+<nav class="navbar navbar-dark bg-primary">
+    <div class="container">
+
+        <a class="navbar-brand fw-bold">
+            🏥 MedGuard AI
+        </a>
+
+        <div>
+            <a href="/" class="btn btn-light">
+                Home
+            </a>
+
+            <a href="/dashboard" class="btn btn-warning">
+                Dashboard
+            </a>
+        </div>
+
+    </div>
+</nav>
+
+<div class="container mt-4">
+
+    <!-- Heading -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2>Patient Dashboard</h2>
+
+        <form method="GET" class="d-flex">
+
+            <input
+                type="text"
+                class="form-control me-2"
+                name="search"
+                placeholder="Search patient..."
+                value="{{ search }}">
+
+            <button class="btn btn-primary">
+                🔍 Search
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- Statistics -->
+
+    <div class="row mb-4">
+
+        <div class="col-md-3">
+
+            <div class="card shadow text-center">
+
+                <div class="card-body">
+
+                    <h5>Total Patients</h5>
+
+                    <h2>{{ total }}</h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card shadow text-center">
+
+                <div class="card-body">
+
+                    <h5>🔴 High Risk</h5>
+
+                    <h2>{{ high }}</h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card shadow text-center">
+
+                <div class="card-body">
+
+                    <h5>🟡 Moderate</h5>
+
+                    <h2>{{ moderate }}</h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card shadow text-center">
+
+                <div class="card-body">
+
+                    <h5>🟢 Low Risk</h5>
+
+                    <h2>{{ low }}</h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Patient Cards -->
+
+    <div class="row">
+
+        {% if patients %}
+
+            {% for patient in patients %}
+
+            <div class="col-md-6 mb-4">
+
+                <div class="card shadow h-100">
+
+                    <div class="card-body">
+
+                        <h4>{{ patient.name }}</h4>
+
+                        <hr>
+
+                        <p><b>Age:</b> {{ patient.age }}</p>
+
+                        <p>
+                            <b>Symptoms:</b><br>
+                            {{ patient.symptoms | join(", ") }}
+                        </p>
+
+                        <p>
+                            <b>Allergies:</b><br>
+                            {{ patient.allergies | join(", ") }}
+                        </p>
+
+                        <p>
+                            <b>Medications:</b><br>
+                            {{ patient.medications | join(", ") }}
+                        </p>
+
+                        {% if patient.timestamp %}
+
+                        <p>
+
+                            <b>Screened On:</b><br>
+
+                            {{ patient.timestamp.strftime("%d-%m-%Y %I:%M %p") }}
+
+                        </p>
+
+                        {% endif %}
+
+                        <p>
+
+                            <b>Risk Level:</b>
+
+                            {% if "High" in patient.risk %}
+
+                                <span class="badge bg-danger fs-6">
+                                    {{ patient.risk }}
+                                </span>
+
+                            {% elif "Moderate" in patient.risk %}
+
+                                <span class="badge bg-warning text-dark fs-6">
+                                    {{ patient.risk }}
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-success fs-6">
+                                    {{ patient.risk }}
+                                </span>
+
+                            {% endif %}
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+        <div class="col-12">
+
+            <div class="alert alert-warning text-center">
+
+                No patient found.
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
