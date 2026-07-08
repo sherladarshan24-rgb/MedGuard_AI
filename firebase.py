@@ -1,7 +1,6 @@
 import os
 import json
 import firebase_admin
-
 from firebase_admin import credentials, firestore
 from dotenv import load_dotenv
 
@@ -9,11 +8,11 @@ load_dotenv()
 
 if not firebase_admin._apps:
 
-    firebase_config = json.loads(
+    firebase_credentials = json.loads(
         os.environ["FIREBASE_CREDENTIALS"]
     )
 
-    cred = credentials.Certificate(firebase_config)
+    cred = credentials.Certificate(firebase_credentials)
 
     firebase_admin.initialize_app(cred)
 
