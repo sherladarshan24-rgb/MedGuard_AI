@@ -1,6 +1,7 @@
 import os
 import json
 import firebase_admin
+
 from firebase_admin import credentials, firestore
 from dotenv import load_dotenv
 
@@ -8,11 +9,14 @@ load_dotenv()
 
 if not firebase_admin._apps:
 
-    firebase_credentials = json.loads(
-        os.environ["FIREBASE_CREDENTIALS"]
-    )
+    if os.path.exists("serviceAccountKey.json"):
+        # Local development
+        cred = credentials.Certificate("serviceAccountKey.json")
 
-    cred = credentials.Certificate(firebase_credentials)
+    else:
+        # Render deployment
+        firebase_json = json.loads(os.environ["FIREBASE_CREDENTIALS"])
+        cred = credentials.Certificate(firebase_json)
 
     firebase_admin.initialize_app(cred)
 
@@ -31,3 +35,18 @@ def get_patients():
         patients.append(patient)
 
     return patients
+def get_patient(patient_id):
+
+    doc = db.collection("patients").document(patient_id).get()
+
+    if doc.exists:
+        patient = doc.to_dict()
+        patient["id"] = doc.id
+        return patient
+
+    return None
+
+
+def delete_patient(patient_id):
+
+    db.collection("patients").document(patient_id).delete()
