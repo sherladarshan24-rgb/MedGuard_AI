@@ -15,9 +15,9 @@ from save_patient import save_patient
 from firebase import (
     get_patients,
     get_patient,
+    update_patient,
     delete_patient
 )
-
 
 app = Flask(__name__)
 
@@ -41,7 +41,7 @@ def home():
         patient_notes = request.form["patient_notes"]
 
         report = analyze_patient(patient_notes)
-
+        print(report)
         latest_report = report
 
         save_patient(report)
@@ -166,7 +166,27 @@ def patient(patient_id):
         patient=patient
     )
 
+@app.route("/edit/<patient_id>", methods=["GET", "POST"])
+def edit(patient_id):
 
+    patient = get_patient(patient_id)
+
+    if request.method == "POST":
+
+        data = {
+            "name": request.form["name"],
+            "age": request.form["age"],
+            "risk": request.form["risk"]
+        }
+
+        update_patient(patient_id, data)
+
+        return redirect("/dashboard")
+
+    return render_template(
+        "edit.html",
+        patient=patient
+    )
 
 
 if __name__ == "__main__":

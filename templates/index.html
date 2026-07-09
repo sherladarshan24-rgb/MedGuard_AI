@@ -211,7 +211,53 @@ Medications: Aspirin"
                         </td>
 
                     </tr>
+                    <tr>
+                        <th>
+                            <i class="bi bi-speedometer2"></i>
+                            Risk Score
+                        </th>
+                        <td>
+                            {{ report.score }}/100
+                        </td>
+                    </tr>
 
+                    <tr>
+                        <th>
+                            <i class="bi bi-hospital"></i>
+                            Recommended Department
+                        </th>
+                        <td>
+                            {{ report.department }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            <i class="bi bi-clipboard2-check"></i>
+                            Recommended Action
+                        </th>
+                        <td>
+                            <ul class="mb-0">
+                                {% for item in report.recommendation %}
+                                <li>{{ item }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            <i class="bi bi-lightbulb"></i>
+                            Why this Risk?
+                        </th>
+                        <td>
+                            <ul class="mb-0">
+                                {% for item in report.reason %}
+                                <li>{{ item }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                    </tr>
                 </table>
 
                 <div class="text-center">

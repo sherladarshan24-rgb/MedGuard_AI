@@ -35,6 +35,8 @@ def get_patients():
         patients.append(patient)
 
     return patients
+
+
 def get_patient(patient_id):
 
     doc = db.collection("patients").document(patient_id).get()
@@ -45,6 +47,11 @@ def get_patient(patient_id):
         return patient
 
     return None
+
+
+def update_patient(patient_id, data):
+
+    db.collection("patients").document(patient_id).update(data)
 
 
 def delete_patient(patient_id):

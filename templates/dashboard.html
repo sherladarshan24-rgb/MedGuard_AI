@@ -280,7 +280,9 @@
 
 
                             <td>
-                                {{ patient.date }}
+                                {% if patient.timestamp %}
+                                    {{ patient.timestamp.strftime("%d-%m-%Y %I:%M %p") }}
+                                {% endif %}
                             </td>
 
 
@@ -288,11 +290,21 @@
 
                             <td>
 
-
                                 <a href="/patient/{{ patient.id }}" class="btn btn-sm btn-outline-primary">
-                                    View
+                                    <i class="bi bi-eye-fill"></i> View
                                 </a>
 
+                                <a href="/edit/{{ patient.id }}" class="btn btn-sm btn-warning">
+                                    <i class="bi bi-pencil-fill"></i> Edit
+                                </a>
+
+                                <a href="/delete/{{ patient.id }}"
+                                class="btn btn-sm btn-danger"
+                                onclick="return confirm('Delete this patient?');">
+
+                                    <i class="bi bi-trash-fill"></i> Delete
+
+                                </a>
 
                             </td>
 
